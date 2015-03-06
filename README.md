@@ -1,6 +1,6 @@
 # SimpleFX-Samples
 
-This is a minimal SimpleFX project.
+This is a project with several SimpleFX-Samples.
 
 You need a SimpleFX-License to compile the application!
 
