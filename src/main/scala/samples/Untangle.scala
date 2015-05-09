@@ -7,9 +7,9 @@ import simplefx.experimental._
 object Untangle extends App
 @SimpleFXApp class Untangle {
 
-  scene         = new Scene(pin,500,500)
+  scene         = new Scene(pin,800,800,Color.LIGHTBLUE)
   lazy val pin  = new Group
-  def randomPos = random[Double2] * (400, 400)
+  def randomPos = random[Double2] * (300,300)
 
   @Bind var level       = 1
   @Bind var nextLevelIn = 0 s
@@ -20,8 +20,9 @@ object Untangle extends App
   class Corner extends Circle {
     center        = randomPos
     radius        = 20
-    stroke        = Color.WHITE
     strokeWidth   = 2
+    stroke        = Color.GREY
+    fill          = Color.DARKGREY
     Δ(center)   <-- Δ(this.dragDistance)
     corners     ::= this
   }
@@ -37,7 +38,7 @@ object Untangle extends App
 
   pin <++ (new Group { children <-- edges  })
   pin <++ (new Group { children <-- corners})
-  pin <++ (new Label { text <-- ("level: " + level)})
+  pin <++ (new Label { font = new Font(20); text <-- ("level: " + level)})
   pin <++ (new Label {
     translateXY      = (100,100)
     font             = new Font(200)
@@ -53,7 +54,6 @@ object Untangle extends App
 
     /* add corners */
     for (i <- 1 until level + 4) { new Corner{ center = randomPos} }
-    //(1 to (level + 4)).map{i => new Corner{ center = randomPos}}
 
     /* add edges  */
     val potentialEdges = corners.flatMap{ from => corners.map { to => (from,to) }}.toSet.filter{ e => e._1 ne e._2 }
@@ -96,7 +96,7 @@ object Untangle extends App
   createLevel(level)
   when(finished) ==> {
     nextLevelIn = time + (5 s)
-    runIn(5 s) {
+    in(5 s) --> {
       if(finished) {
         level += 1
         createLevel(level)
