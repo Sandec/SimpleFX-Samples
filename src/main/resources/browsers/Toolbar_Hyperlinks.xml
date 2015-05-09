@@ -1,0 +1,7 @@
+<Hyperlinks resourcePath="/browsers/">
+	<Hyperlink caption="Products"		imageFile="Product.png"			url="http://www.oracle.com/products/index.html"></Hyperlink>
+	<Hyperlink caption="Blogs"			imageFile="Blog.png"			url="http://blogs.oracle.com"></Hyperlink>
+	<Hyperlink caption="Documentation"	imageFile="Documentation.png"	url="http://docs.oracle.com/javase/index.html"></Hyperlink>
+	<Hyperlink caption="Partners"		imageFile="Partners.png"		url="http://www.oracle.com/partners/index.html"></Hyperlink>
+	<Hyperlink caption="Help"			imageFile="Help.png"			url="file:///Users/hhs/SimpleFX-Samples/src/main/resources/browsers/help.html"></Hyperlink> //no absolut pathes please! ... damn it
+</Hyperlinks>
