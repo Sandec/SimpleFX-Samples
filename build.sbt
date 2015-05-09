@@ -1,6 +1,12 @@
+enablePlugins(plugin.JavaFXMobilePlugin)
 
 scalaVersion := "2.11.6"
 organization := "SANDEC"
+
+javacOptions ++= Seq("-source", "1.7", "-target", "1.7")
+mainClass := Some("samples.Untangle")
+
+appName := "Untangle"
 
 resolvers += Resolver.url("SANDEC", url("http://sandec.de/repo/"))(Resolver.ivyStylePatterns)
 libraryDependencies += "SANDEC" %% "simplefx" % "2.1.0"
