@@ -36,9 +36,9 @@ object Untangle extends App
     edges       ::= this
   }
 
+  pin <++ (new Label { font = new Font(20); text <-- ("level: " + level)})
   pin <++ (new Group { children <-- edges  })
   pin <++ (new Group { children <-- corners})
-  pin <++ (new Label { font = new Font(20); text <-- ("level: " + level)})
   pin <++ (new Label {
     translateXY      = (100,100)
     font             = new Font(200)
