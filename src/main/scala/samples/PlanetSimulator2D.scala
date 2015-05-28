@@ -16,7 +16,7 @@ object PlanetSimulator2D extends App
   val distanceMin  = 100.0                    // Distance of the first Planet to the Sun.
   val distanceIncr = 10.0                     // Distance increment for the planets.
   val planetCount  = 120                      // Number of planets.
-  val universe     = new SimpleFXRegion       // Where all the Objects are pinned.
+  val universe     = new Group                // Where all the Objects are pinned.
   val planets      = new Group {              // Where all the planets are pinned.
     Δ(layoutXY) <-- Δ(universe.dragDistance)  // this allows to move the Scene with Dragging
   }
@@ -25,6 +25,7 @@ object PlanetSimulator2D extends App
 
 
   /* Pin all Objects onto the Scene-Graph --------------------------------------------------- */
+  universe <++ (new Rectangle{ wh <-- scene.wh})
   universe <++ planets
   universe <++ (new Text{text <-- "FPS: " + framerate; fill = Color.WHITE; layoutXY := (50,50)})
   scene = new Scene (universe, 1000, 1000) {fill = Color.BLACK}   // Black background.
