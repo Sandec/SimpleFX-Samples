@@ -16,15 +16,16 @@ object PlanetSimulator3D extends App
   val distanceMin  = 100.0                                    // Distance of the first Planet to the Sun.
   val distanceIncr = 10.0                                     // Distance increment for the planets.
   val planetCount  = 100                                      // Number of planets.
-  val surface2D    = new SimpleFXRegion                       // The 2D Surface which is used for Dragging.
+  val surface2D    = new Group                                // The 2D Surface which is used for Dragging.
   val planets      = new Group                                // Where all the planets, except the sun, are pinned.
   val universe     = new SubScene(planets, 1000, 1000, true, SceneAntialiasing.DISABLED) {
-    expansion    <-- surface2D.expansion                      // The 3D Scene has the same size as the surface has.
+    expansion    <-- scene.wh                                 // The 3D Scene has the same size as the surface has.
   }                                                           // It is bound and therefore automatically updated.
   /* ................................................................................................................ */
 
 
   /* Pin all Objects onto the Scene-Graph --------------------------------------------------------------------------- */
+  surface2D <++ (new Rectangle{ wh <-- scene.wh})             // Detect all mouse events.
   universe  <++ planets                                       // Puts all the planets into the universe.
   surface2D <++ new Text{text <-- "FPS: " + framerate; fill = Color.WHITE; layoutXY := (50,50)}
   surface2D <++ universe                                      // Puts the universe onto the 2D Surface.
