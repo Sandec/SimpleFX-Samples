@@ -23,12 +23,12 @@ object Untangle extends App
     strokeWidth   = 2
     stroke        = Color.GREY
     fill          = Color.DARKGREY
-    Δ(center)   <-- Δ(this.dragDistance)
+    Δ(center)   <-- Δ(dragDistance)
     corners     ::= this
   }
 
   class Edge(startCorner: Corner, endCorner: Corner) extends Line {
-    @Bind val hasCollision = <--(!edges.forall { e2 => (e2 eq this) || !lineIntersection(this.startEnd,e2.startEnd) })
+    @Bind val hasCollision = <--(!edges.forall { e2 => (e2 eq this) || !lineIntersection(startEnd,e2.startEnd) })
     start       <-- startCorner.center
     end         <--   endCorner.center
     stroke      <-- (if (hasCollision) Color.RED else Color.GREEN)
