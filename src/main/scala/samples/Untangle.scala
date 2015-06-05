@@ -28,7 +28,7 @@ object Untangle extends App
   }
 
   class Edge(startCorner: Corner, endCorner: Corner) extends Line {
-    @Bind val hasCollision = <--(!edges.forall { e2 => (e2 eq this) || !lineIntersection(startEnd,e2.startEnd) })
+    @Bind val hasCollision = <--(!edges.forall { e2 => !lineIntersection(startEnd,e2.startEnd) })
     start       <-- startCorner.center
     end         <--   endCorner.center
     stroke      <-- (if (hasCollision) Color.RED else Color.GREEN)
@@ -56,7 +56,10 @@ object Untangle extends App
     for (i <- 1 until level + 4) { new Corner{ center = randomPos} }
 
     /* add edges  */
-    val potentialEdges = corners.flatMap{ from => corners.map { to => (from,to) }}.toSet.filter{ e => e._1 ne e._2 }
+    val potentialEdges = for {
+      c1 <- corners;
+      c2 <- corners if c1 ne c2
+    } yield (c1,c2)
 
     for (line <- potentialEdges) { // add all edges, so none of the added edges collide
       if(edges.forall(edge =>
