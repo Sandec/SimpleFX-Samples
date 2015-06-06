@@ -36,7 +36,7 @@ object PlanetSimulator3D extends App
   /* Define the dragging functionality ------------------------------------------------------------------------------ */
   @Bind var rotateMatrix = (Transform.IDENTITY)               // Declares the rotation, and
   rotateMatrix <-- (prev(rotateMatrix)                        // binds it to the drag-distance.
-                  * Rotate(Δ(surface2D.dragDistance)/(5,-5))) // The constant (5, -5) to adjust usability.
+            * Rotate(Δ(surface2D.dragDistanceScene )/(5,-5))) // The constant (5, -5) to adjust usability.
 
   universe.camera = new PerspectiveCamera(true) {
     farClip     = Double.MaxValue                             // Look at the end of universe.
