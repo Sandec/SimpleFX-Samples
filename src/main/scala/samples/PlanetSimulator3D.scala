@@ -11,11 +11,11 @@ object PlanetSimulator3D extends App
 
   /* Declarations of major constants and variables ------------------------------------------------------------------ */
   val G            = 30.0                                     // Gravity constant.
-  val minRadius    = 2                                        // Smallest possible radius of a planet.
-  val maxRadius    = 10                                       // Largest  possible radius of a planet.
+  val minRadius    = 3                                        // Smallest possible radius of a planet.
+  val maxRadius    = 12                                       // Largest  possible radius of a planet.
   val distanceMin  = 100.0                                    // Distance of the first Planet to the Sun.
   val distanceIncr = 10.0                                     // Distance increment for the planets.
-  val planetCount  = 100                                      // Number of planets.
+  val planetCount  = 60                                      // Number of planets.
   val surface2D    = new Group                                // The 2D Surface which is used for Dragging.
   val planets      = new Group                                // Where all the planets, except the sun, are pinned.
   val universe     = new SubScene(planets, 1000, 1000, true, SceneAntialiasing.DISABLED) {
