@@ -8,8 +8,8 @@ mainClass := Some("samples.Untangle")
 
 appName := "Untangle"
 
-resolvers += Resolver.url("SANDEC", url("http://sandec.de/repo/"))(Resolver.ivyStylePatterns)
-libraryDependencies += "SANDEC" %% "simplefx" % "2.1.1-SNAPSHOT"
+resolvers += Resolver.url("SANDEC", url("http://dl.bintray.com/sandec/repo"))(Resolver.ivyStylePatterns)
+libraryDependencies += "SANDEC" %% "simplefx" % "2.1.1"
 
 scalacOptions ++= Seq("-unchecked", "-deprecation", "-feature", "-language:_")
 addCompilerPlugin("org.scalamacros" % "paradise" % "2.0.1" cross CrossVersion.full)

@@ -36,16 +36,16 @@ object Untangle extends App
     edges       ::= this
   }
 
-  pin <++ (new Label { font = new Font(20); text <-- ("level: " + level)})
-  pin <++ (new Group { children <-- edges  })
-  pin <++ (new Group { children <-- corners})
-  pin <++ (new Label {
+  pin <++ new Label { layoutXY = (100,10) ; font = new Font(20); text <-- ("level: " + level)}
+  pin <++ new Group { children <-- edges  }
+  pin <++ new Group { children <-- corners}
+  pin <++ new Label {
     translateXY      = (100,100)
     font             = new Font(200)
-    text           <-- (if(time < nextLevelIn && finished) ("" + ((nextLevelIn - time) / second).toInt) else "")
+    text           <-- (if(time < nextLevelIn && finished) "" + ((nextLevelIn - time) / second).toInt else "")
     mouseTransparent = true
     textFill         = Color.GREY
-  })
+  }
 
   def createLevel(level: Int) {
     /* reset everything */

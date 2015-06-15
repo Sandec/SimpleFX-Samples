@@ -15,7 +15,7 @@ object PlanetSimulator3D extends App
   val maxRadius    = 12                                       // Largest  possible radius of a planet.
   val distanceMin  = 100.0                                    // Distance of the first Planet to the Sun.
   val distanceIncr = 10.0                                     // Distance increment for the planets.
-  val planetCount  = 60                                      // Number of planets.
+  val planetCount  = 60                                       // Number of planets.
   val surface2D    = new Group                                // The 2D Surface which is used for Dragging.
   val planets      = new Group                                // Where all the planets, except the sun, are pinned.
   val universe     = new SubScene(planets, 1000, 1000, true, SceneAntialiasing.DISABLED) {
@@ -25,7 +25,7 @@ object PlanetSimulator3D extends App
 
 
   /* Pin all Objects onto the Scene-Graph --------------------------------------------------------------------------- */
-  surface2D <++ (new Rectangle{ wh <-- scene.wh})             // Detect all mouse events.
+  surface2D <++ new Rectangle{ wh <-- scene.wh}               // Detect all mouse events.
   universe  <++ planets                                       // Puts all the planets into the universe.
   surface2D <++ new Text{text <-- "FPS: " + framerate; fill = Color.WHITE; layoutXY := (50,50)}
   surface2D <++ universe                                      // Puts the universe onto the 2D Surface.
@@ -34,9 +34,9 @@ object PlanetSimulator3D extends App
 
 
   /* Define the dragging functionality ------------------------------------------------------------------------------ */
-  @Bind var rotateMatrix = (Transform.IDENTITY)               // Declares the rotation, and
+  @Bind var rotateMatrix = Transform.IDENTITY                 // Declares the rotation, and
   rotateMatrix <-- (prev(rotateMatrix)                        // binds it to the drag-distance.
-            * Rotate(Δ(surface2D.dragDistanceScene )/(5,-5))) // The constant (5, -5) to adjust usability.
+            * Rotate(Δ(surface2D.dragDistance)/(5,-5)))       // The constant (5, -5) to adjust usability.
 
   universe.camera = new PerspectiveCamera(true) {
     farClip     = Double.MaxValue                             // Look at the end of universe.
@@ -82,8 +82,8 @@ object PlanetSimulator3D extends App
     center   = pos
     material = new PhongMaterial(col)
 
-    @Bind var mass         =     (radius ** 3    )                    // The constant mass of the planet.
-    @Bind var speed        =     (startSpeed     )                    // The speed is defined below through it's Δ.
+    @Bind var mass         =      radius ** 3                         // The constant mass of the planet.
+    @Bind var speed        =      startSpeed                          // The speed is defined below through it's Δ.
     @Bind var force        =     (0.0 , 0.0 , 0.0)                    // The force is defined below through the Σ.
     @Bind val otherPlanets = <-- (planets.children.of[Planet] - this) // All, but me.
 
