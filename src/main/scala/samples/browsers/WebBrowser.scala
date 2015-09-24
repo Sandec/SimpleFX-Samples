@@ -42,11 +42,10 @@ class WebBrowser extends SimpleFXRegion {
 
   /* Declare and pin the Browser & the smallView. ------------------------------------------------------------------- */
   object jsInterface { def exit() = javafx.application.Platform.exit() }
-  lazy val renderer = new WebView {
-    prefWidthProp  <--  pin.width                           // Binds this' width to scene's width.
-    prefHeightProp <-- (pin.height - toolBar.height)	      // Binds the height.
-    when(loadOk)   --> { global.window.app = jsInterface }
-  }.extended
+  lazy val renderer = new WebView()
+  renderer.prefWidthProp  <--  pin.width                          // Binds this' width to scene's width.
+  renderer.prefHeightProp <-- (pin.height - toolBar.height)	      // Binds the height.
+  when(renderer.loadOk)   --> { renderer.global.window.app = jsInterface }
   /* ................................................................................................................ */
 
 
