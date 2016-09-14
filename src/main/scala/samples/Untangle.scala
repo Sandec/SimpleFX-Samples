@@ -7,9 +7,9 @@ import simplefx.experimental._
 object Untangle extends App
 @SimpleFXApp class Untangle {
 
-  scene         = new Scene(pin,800,800,Color.LIGHTBLUE)
-  lazy val pin  = new Group
-  def randomPos = random[Double2] * (300,300)
+  scene         = new Scene(pin,800,800,new ImagePattern(new Image("/untangle/background.png")))
+  lazy val pin  = new Group()
+  def randomPos = (35.0, 35.0) + random[Double2] * ((800.0,650.0) - (35.0,35.0)*2)
 
   @Bind var level       = 1
   @Bind var nextLevelIn = 0 s
@@ -18,11 +18,14 @@ object Untangle extends App
   @Bind var edges       = List.empty[Edge  ]
 
   class Corner extends Circle {
+    @Bind var edges = List.empty[Edge]
+    @Bind val hasCollision = <--(!edges.forall(!_.hasCollision))
     center        = randomPos
-    radius        = 20
-    strokeWidth   = 2
-    stroke        = Color.GREY
-    fill          = Color.DARKGREY
+    radius        = 30
+    strokeWidth   = 0
+    stroke        = Color.BLACK
+    fill        <-- (if (hasCollision) new ImagePattern(Image.cached("/untangle/red_button.png"))
+                     else new ImagePattern(Image.cached("/untangle/green_button.png")))
     Δ(center)   <-- Δ(dragDistance)
     corners     ::= this
   }
@@ -31,20 +34,22 @@ object Untangle extends App
     @Bind val hasCollision = <--(!edges.forall { e2 => !lineIntersection(startEnd,e2.startEnd) })
     start       <-- startCorner.center
     end         <--   endCorner.center
-    stroke      <-- (if (hasCollision) Color.RED else Color.GREEN)
-    strokeWidth   = 4
+    stroke      <-- (if (hasCollision) Color.RED else Color.SPRINGGREEN)
+    strokeWidth   = 10
     edges       ::= this
+    startCorner.edges ::= this
+    endCorner  .edges ::= this
   }
 
-  pin <++ new Label { layoutXY = (100,10) ; font = new Font(20); text <-- ("level: " + level)}
+  pin <++ new Label { layoutXY <-- scene.wh * (0.15,0.894) ; font = new Font(40); text <-- ("           " + level)}
   pin <++ new Group { children <-- edges  }
   pin <++ new Group { children <-- corners}
   pin <++ new Label {
-    translateXY      = (100,100)
-    font             = new Font(200)
+    translateXY      <-- scene.wh * (0.485,0.874)
+    font             = new Font(65)
     text           <-- (if(time < nextLevelIn && finished) "" + ((nextLevelIn - time) / second).toInt else "")
     mouseTransparent = true
-    textFill         = Color.GREY
+    textFill         = Color.RED
   }
 
   def createLevel(level: Int) {
