@@ -7,9 +7,14 @@ import simplefx.experimental._
 object Untangle extends App
 @SimpleFXApp class Untangle {
 
-  scene         = new Scene(pin,800,800,new ImagePattern(new Image("/untangle/background.png")))
+  def SCENE_WH   = ( 800.0 , 800.0)
+  def BACKGROUND = scene.wh * (1.0, 0.87)
+  def RADIUS     = 30.0
+  def RANRAD     = RADIUS + 0.5
+
+  scene         = new Scene(pin,SCENE_WH.x,SCENE_WH.y,new ImagePattern(new Image("/untangle/background.png")))
   lazy val pin  = new Group()
-  def randomPos = (35.0, 35.0) + random[Double2] * ((800.0,650.0) - (35.0,35.0)*2)
+  def randomPos = (RANRAD, RANRAD) + random[Double2] * (BACKGROUND - (RANRAD,RANRAD)*2)
 
   @Bind var level       = 1
   @Bind var nextLevelIn = 0 s
@@ -21,11 +26,11 @@ object Untangle extends App
     @Bind var edges = List.empty[Edge]
     @Bind val hasCollision = <--(!edges.forall(!_.hasCollision))
     center        = randomPos
-    radius        = 30
+    radius        = RADIUS
     strokeWidth   = 0
     stroke        = Color.BLACK
-    fill        <-- (if (hasCollision) new ImagePattern(Image.cached("/untangle/red_button.png"))
-                     else new ImagePattern(Image.cached("/untangle/green_button.png")))
+    fill        <-- (if (hasCollision) new ImagePattern(Image.cached("/untangle/red_button.png"  ))
+                                  else new ImagePattern(Image.cached("/untangle/green_button.png")) )
     Δ(center)   <-- Δ(dragDistance)
     corners     ::= this
   }
@@ -40,12 +45,48 @@ object Untangle extends App
     startCorner.edges ::= this
     endCorner  .edges ::= this
   }
+  class Star (propXY:Double2, mod:Int) extends ImageView ("/untangle/button_star.png") {
+    laXY    <-- (scene.wh * propXY)
+    fitWH   <-- (scene.wh * (0.045, 0.045))
+    visible <-- ((level % 10 >= mod || level % 10 == 0))
+  }
 
-  pin <++ new Label { layoutXY <-- scene.wh * (0.15,0.894) ; font = new Font(40); text <-- ("           " + level)}
+  class Pillar (propX:Double, div:Int) extends Rectangle {
+    laXY    <-- (scene.wh * (propX , 0.88875 ))
+    this.wh <-- (scene.wh * (0.021 , 0.089   ))
+    fill      = Color.BLUE
+    visible <-- (((level-1) / 10 >= div))
+  }
+
+  @Bind var levelTenIndicators:List[Rectangle] = Nil
+  @Bind var levelOneIndicators:List[Star     ] = Nil
+
+  levelTenIndicators = levelTenIndicators ::: List (new Pillar (0.598, 1) )
+  levelTenIndicators = levelTenIndicators ::: List (new Pillar (0.643, 2) )
+  levelTenIndicators = levelTenIndicators ::: List (new Pillar (0.688, 3) )
+  levelTenIndicators = levelTenIndicators ::: List (new Pillar (0.731, 4) )
+  levelTenIndicators.foreach ( pillar => { pin <++ pillar } )
+
+  levelOneIndicators = levelOneIndicators ::: List (new Star ( (0.7595  , 0.8875 ) , 1) )
+  levelOneIndicators = levelOneIndicators ::: List (new Star ( (0.8070  , 0.885  ) , 2) )
+  levelOneIndicators = levelOneIndicators ::: List (new Star ( (0.853   , 0.8875 ) , 3) )
+  levelOneIndicators = levelOneIndicators ::: List (new Star ( (0.901   , 0.887  ) , 4) )
+  levelOneIndicators = levelOneIndicators ::: List (new Star ( (0.9485  , 0.88875) , 5) )
+
+  levelOneIndicators = levelOneIndicators ::: List (new Star ( (0.76    , 0.936  ) , 6) )
+  levelOneIndicators = levelOneIndicators ::: List (new Star ( (0.8075  , 0.936  ) , 7) )
+  levelOneIndicators = levelOneIndicators ::: List (new Star ( (0.8545  , 0.936  ) , 8) )
+  levelOneIndicators = levelOneIndicators ::: List (new Star ( (0.90105 , 0.936  ) , 9) )
+  levelOneIndicators = levelOneIndicators ::: List (new Star ( (0.949   , 0.936  ) ,10) )
+
+  levelOneIndicators.foreach ( star => { pin <++ star } )
+
+  pin <++ new Label { layoutXY <-- scene.wh * (0.3,0.896); font = new Font(48); text <-- level.toString}
+
   pin <++ new Group { children <-- edges  }
   pin <++ new Group { children <-- corners}
   pin <++ new Label {
-    translateXY      <-- scene.wh * (0.485,0.874)
+    translateXY    <-- scene.wh * (0.49,0.883)
     font             = new Font(65)
     text           <-- (if(time < nextLevelIn && finished) "" + ((nextLevelIn - time) / second).toInt else "")
     mouseTransparent = true
