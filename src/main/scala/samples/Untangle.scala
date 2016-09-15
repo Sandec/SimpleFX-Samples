@@ -45,6 +45,7 @@ object Untangle extends App
     startCorner.edges ::= this
     endCorner  .edges ::= this
   }
+
   class Star (propXY:Double2, mod:Int) extends ImageView ("/untangle/button_star.png") {
     laXY    <-- (scene.wh * propXY)
     fitWH   <-- (scene.wh * (0.045, 0.045))
@@ -58,28 +59,14 @@ object Untangle extends App
     visible <-- (((level-1) / 10 >= div))
   }
 
-  @Bind var levelTenIndicators:List[Rectangle] = Nil
-  @Bind var levelOneIndicators:List[Star     ] = Nil
+  private var pillarIndex = 0
+  @Bind var levelTenIndicators = List ( 0.598, 0.643, 0.688, 0.731 )
+  levelTenIndicators.foreach ( xPos => { pillarIndex += 1; pin <++ new Pillar ( xPos, pillarIndex) } )
 
-  levelTenIndicators = levelTenIndicators ::: List (new Pillar (0.598, 1) )
-  levelTenIndicators = levelTenIndicators ::: List (new Pillar (0.643, 2) )
-  levelTenIndicators = levelTenIndicators ::: List (new Pillar (0.688, 3) )
-  levelTenIndicators = levelTenIndicators ::: List (new Pillar (0.731, 4) )
-  levelTenIndicators.foreach ( pillar => { pin <++ pillar } )
-
-  levelOneIndicators = levelOneIndicators ::: List (new Star ( (0.7595  , 0.8875 ) , 1) )
-  levelOneIndicators = levelOneIndicators ::: List (new Star ( (0.8070  , 0.885  ) , 2) )
-  levelOneIndicators = levelOneIndicators ::: List (new Star ( (0.853   , 0.8875 ) , 3) )
-  levelOneIndicators = levelOneIndicators ::: List (new Star ( (0.901   , 0.887  ) , 4) )
-  levelOneIndicators = levelOneIndicators ::: List (new Star ( (0.9485  , 0.88875) , 5) )
-
-  levelOneIndicators = levelOneIndicators ::: List (new Star ( (0.76    , 0.936  ) , 6) )
-  levelOneIndicators = levelOneIndicators ::: List (new Star ( (0.8075  , 0.936  ) , 7) )
-  levelOneIndicators = levelOneIndicators ::: List (new Star ( (0.8545  , 0.936  ) , 8) )
-  levelOneIndicators = levelOneIndicators ::: List (new Star ( (0.90105 , 0.936  ) , 9) )
-  levelOneIndicators = levelOneIndicators ::: List (new Star ( (0.949   , 0.936  ) ,10) )
-
-  levelOneIndicators.foreach ( star => { pin <++ star } )
+  private var starIndex = 0
+  @Bind var levelOneXpositions = List (0.7595, 0.8070, 0.853 , 0.901 , 0.9485)
+  levelOneXpositions.foreach ( xPos => { starIndex += 1; pin <++ new Star ( (xPos, 0.8875), starIndex ) } )
+  levelOneXpositions.foreach ( xPos => { starIndex += 1; pin <++ new Star ( (xPos, 0.936 ), starIndex ) } )
 
   pin <++ new Label { layoutXY <-- scene.wh * (0.3,0.896); font = new Font(48); text <-- level.toString}
 
