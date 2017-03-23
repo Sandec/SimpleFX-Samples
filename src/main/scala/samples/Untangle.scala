@@ -7,9 +7,14 @@ import simplefx.experimental._
 object Untangle extends App
 @SimpleFXApp class Untangle {
 
-  scene         = new Scene(pin,800,800,new ImagePattern(new Image("/untangle/background.png")))
+  def SCENE_WH   = ( 800.0 , 800.0)
+  def BACKGROUND = scene.wh * (1.0, 0.87)
+  def RADIUS     = 30.0
+  def RANRAD     = RADIUS + 0.5
+
+  scene         = new Scene(pin,SCENE_WH.x,SCENE_WH.y,new ImagePattern(new Image("/untangle/background.png")))
   lazy val pin  = new Group()
-  def randomPos = (35.0, 35.0) + random[Double2] * ((800.0,650.0) - (35.0,35.0)*2)
+  def randomPos = (RANRAD, RANRAD) + random[Double2] * (BACKGROUND - (RANRAD,RANRAD)*2)
 
   @Bind var level       = 1
   @Bind var nextLevelIn = 0 s
@@ -21,11 +26,11 @@ object Untangle extends App
     @Bind var edges = List.empty[Edge]
     @Bind val hasCollision = <--(!edges.forall(!_.hasCollision))
     center        = randomPos
-    radius        = 30
+    radius        = RADIUS
     strokeWidth   = 0
     stroke        = Color.BLACK
-    fill        <-- (if (hasCollision) new ImagePattern(Image.cached("/untangle/red_button.png"))
-                     else new ImagePattern(Image.cached("/untangle/green_button.png")))
+    fill        <-- (if (hasCollision) new ImagePattern(Image.cached("/untangle/red_button.png"  ))
+                                  else new ImagePattern(Image.cached("/untangle/green_button.png")) )
     Δ(center)   <-- Δ(dragDistance)
     corners     ::= this
   }
@@ -41,11 +46,34 @@ object Untangle extends App
     endCorner  .edges ::= this
   }
 
-  pin <++ new Label { layoutXY <-- scene.wh * (0.15,0.894) ; font = new Font(40); text <-- ("           " + level)}
+  class Star (propXY:Double2, mod:Int) extends ImageView ("/untangle/button_star.png") {
+    laXY    <-- (scene.wh * propXY)
+    fitWH   <-- (scene.wh * (0.045, 0.045))
+    visible <-- ((level % 10 >= mod || level % 10 == 0))
+  }
+
+  class Pillar (propX:Double, div:Int) extends Rectangle {
+    laXY    <-- (scene.wh * (propX , 0.88875 ))
+    this.wh <-- (scene.wh * (0.021 , 0.089   ))
+    fill      = Color.BLUE
+    visible <-- (((level-1) / 10 >= div))
+  }
+
+  private var pillarIndex = 0
+  @Bind var levelTenIndicators = List ( 0.598, 0.643, 0.688, 0.731 )
+  levelTenIndicators.foreach ( xPos => { pillarIndex += 1; pin <++ new Pillar ( xPos, pillarIndex) } )
+
+  private var starIndex = 0
+  @Bind var levelOneXpositions = List (0.7595, 0.8070, 0.853 , 0.901 , 0.9485)
+  levelOneXpositions.foreach ( xPos => { starIndex += 1; pin <++ new Star ( (xPos, 0.8875), starIndex ) } )
+  levelOneXpositions.foreach ( xPos => { starIndex += 1; pin <++ new Star ( (xPos, 0.936 ), starIndex ) } )
+
+  pin <++ new Label { layoutXY <-- scene.wh * (0.3,0.896); font = new Font(48); text <-- level.toString}
+
   pin <++ new Group { children <-- edges  }
   pin <++ new Group { children <-- corners}
   pin <++ new Label {
-    translateXY      <-- scene.wh * (0.485,0.874)
+    translateXY    <-- scene.wh * (0.49,0.883)
     font             = new Font(65)
     text           <-- (if(time < nextLevelIn && finished) "" + ((nextLevelIn - time) / second).toInt else "")
     mouseTransparent = true
