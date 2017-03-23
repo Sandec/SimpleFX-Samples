@@ -2,6 +2,7 @@ group 'SANDEC'
 version '0.3-SNAPSHOT'
 
 
+
 buildscript {
     repositories {
         jcenter()
@@ -16,6 +17,7 @@ buildscript {
     dependencies {
         classpath 'com.jprotechnologies.jpro:jpro-plugin-gradle:0.1.11-SNAPSHOT'
         classpath 'SANDEC:simplefx-plugin-gradle:2.3.0'
+
         classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.7.3'
     }
 }
@@ -34,6 +36,7 @@ sourceCompatibility = 1.8
 dependencies {
     compile 'com.jprotechnologies.jpro:jpro-browser-api:0.1.12-SNAPSHOT'
     compile fileTree(dir: 'lib', include: ['*.jar'])
+
     //compile 'SANDEC:simplefx-all_2.11:2.2.8'
 }
 
@@ -51,6 +54,7 @@ mainClassName = 'samples.Untangle'
 jpro {
     //jpro version
     jproVersion = "0.1.13-SNAPSHOT"
+
 }
 
 publishing {
@@ -60,6 +64,7 @@ publishing {
             groupId project.group
             artifactId project.name
             version "0.3-SNAPSHOT"
+
         }
     }
 }

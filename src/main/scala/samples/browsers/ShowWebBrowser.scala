@@ -7,15 +7,15 @@ import simplefx.experimental._
 
 
 /* === ShowWebBrowser =========================== START ============================================================= */
-object ShowWebBrowser extends App
-@SimpleFXApp class ShowWebBrowser { title = "SimpleFX Sample - WebBrowser"
-
-  /* Create the Scene ----------------------------------------------------------------------------------------------- */
-  val browser = new WebBrowser { styleClass ::= "browser" }
-  scene = new Scene (browser, 800, 600, SLATEGREY) {
-    stylesheets ::= "/browsers/BrowserToolbar.css"
-  }
-  /* ................................................................................................................ */
-}
+//object ShowWebBrowser extends App
+//@SimpleFXApp class ShowWebBrowser { title = "SimpleFX Sample - WebBrowser"
+//
+//  /* Create the Scene ----------------------------------------------------------------------------------------------- */
+//  val browser = new WebBrowser { styleClass ::= "browser" }
+//  scene = new Scene (browser, 800, 600, SLATEGREY) {
+//    stylesheets ::= "/browsers/BrowserToolbar.css"
+//  }
+//  /* ................................................................................................................ */
+//}
 /* === ShowWebBrowser =========================== END =============================================================== */
 
