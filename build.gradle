@@ -1,0 +1,78 @@
+group 'SANDEC'
+version '0.3-SNAPSHOT'
+
+
+buildscript {
+    repositories {
+        jcenter()
+        mavenLocal()
+        maven {
+            url "http://sandec.bintray.com/repo"
+        }
+        maven {
+            url "http://mix-software.com:8081/nexus/content/repositories/jpro-snapshots"
+        }
+    }
+    dependencies {
+        classpath 'com.jprotechnologies.jpro:jpro-plugin-gradle:0.1.11-SNAPSHOT'
+        classpath 'SANDEC:simplefx-plugin-gradle:2.3.0'
+        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.7.3'
+    }
+}
+
+
+repositories {
+    mavenLocal()
+    jcenter()
+}
+
+
+apply plugin: 'java'
+
+sourceCompatibility = 1.8
+
+dependencies {
+    compile 'com.jprotechnologies.jpro:jpro-browser-api:0.1.12-SNAPSHOT'
+    compile fileTree(dir: 'lib', include: ['*.jar'])
+    //compile 'SANDEC:simplefx-all_2.11:2.2.8'
+}
+
+
+
+apply plugin: 'com.jprotechnologies.jpro'
+apply plugin: 'de.sandec.simplefx'
+apply plugin: 'com.jfrog.bintray'
+apply plugin: 'maven-publish'
+
+
+//mainClassName = 'com.jpro.helloworld.HelloWorldApplication2'
+mainClassName = 'samples.Untangle'
+
+jpro {
+    //jpro version
+    jproVersion = "0.1.13-SNAPSHOT"
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+            groupId project.group
+            artifactId project.name
+            version "0.3-SNAPSHOT"
+        }
+    }
+}
+
+bintray {
+    user = BINTRAY_USER
+    key = BINTRAY_KEY
+    publications = ['mavenJava']
+    publish = true
+    override = true
+    pkg {
+        repo = 'apps'
+        name = project.name
+        userOrg = 'sandec'
+    }
+}
