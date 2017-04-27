@@ -1,5 +1,5 @@
 group 'SANDEC'
-version '0.4'
+version '0.5'
 
 
 
@@ -16,7 +16,7 @@ buildscript {
     }
     dependencies {
         classpath 'com.jprotechnologies.jpro:jpro-plugin-gradle:0.1.11-SNAPSHOT'
-        classpath 'SANDEC:simplefx-plugin-gradle:2.3.2'
+        classpath 'SANDEC:simplefx-plugin-gradle:2.4.0'
 
         classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.7.3'
     }
@@ -34,7 +34,7 @@ apply plugin: 'java'
 sourceCompatibility = 1.8
 
 dependencies {
-    compile 'com.jprotechnologies.jpro:jpro-browser-api:0.1.12-SNAPSHOT'
+    compile 'com.jprotechnologies.jpro:jpro-browser-api:0.1.14-SNAPSHOT'
     compile fileTree(dir: 'lib', include: ['*.jar'])
 
     //compile 'SANDEC:simplefx-all_2.11:2.2.8'
