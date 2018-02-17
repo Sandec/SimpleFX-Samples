@@ -1,22 +1,18 @@
 group 'SANDEC'
-version '0.5'
+version '0.6'
 
 
 
 buildscript {
     repositories {
         jcenter()
-        mavenLocal()
         maven {
             url "http://sandec.bintray.com/repo"
         }
-        maven {
-            url "http://mix-software.com:8081/nexus/content/repositories/jpro-snapshots"
-        }
     }
     dependencies {
-        classpath 'com.jprotechnologies.jpro:jpro-plugin-gradle:0.1.11-SNAPSHOT'
-        classpath 'SANDEC:simplefx-plugin-gradle:2.4.0'
+        classpath "com.sandec.jpro:jpro-plugin-gradle:$JPRO_PLUGIN_VERSION"
+        classpath "SANDEC:simplefx-plugin-gradle:$SIMPLEFX_VERSION"
 
         classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.7.3'
     }
@@ -24,7 +20,6 @@ buildscript {
 
 
 repositories {
-    mavenLocal()
     jcenter()
 }
 
@@ -34,7 +29,6 @@ apply plugin: 'java'
 sourceCompatibility = 1.8
 
 dependencies {
-    compile 'com.jprotechnologies.jpro:jpro-browser-api:0.1.14-SNAPSHOT'
     compile fileTree(dir: 'lib', include: ['*.jar'])
 
     //compile 'SANDEC:simplefx-all_2.11:2.2.8'
@@ -42,7 +36,7 @@ dependencies {
 
 
 
-apply plugin: 'com.jprotechnologies.jpro'
+apply plugin: 'com.sandec.jpro'
 apply plugin: 'de.sandec.simplefx'
 apply plugin: 'com.jfrog.bintray'
 apply plugin: 'maven-publish'
@@ -52,12 +46,7 @@ apply plugin: 'maven-publish'
 mainClassName = 'samples.Untangle'
 
 jpro {
-    jproVersion = "0.1.13-SNAPSHOT"
-    if (project.hasProperty('JPRO_LICENSE_USERNAME')) {
-        username     ="$JPRO_LICENSE_USERNAME"
-        password     ="$JPRO_LICENSE_PASSWORD"
-        licensenumber="$JPRO_LICENSE_LICENSENUMBER"
-    }
+    jproVersion = "$JPRO_VERSION"
 }
 
 publishing {
