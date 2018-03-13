@@ -7,7 +7,5 @@ more informations: www.sandec.de
 
 
 ## Run the application:
-``` > sbt run ```
+``` > gradle run ```
 
-Create an Android app:
-``` > sbt "javafx androidInstall" ```

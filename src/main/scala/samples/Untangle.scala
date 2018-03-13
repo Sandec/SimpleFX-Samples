@@ -6,11 +6,13 @@ import simplefx.experimental._
 
 object Untangle extends App
 @SimpleFXApp class Untangle {
+  val _font = new Font(48)
 
   def SCENE_WH   = ( 800.0 , 800.0)
   def BACKGROUND = scene.wh * (1.0, 0.87)
   def RADIUS     = 30.0
   def RANRAD     = RADIUS + 0.5
+  def SCALEY     = scene.height / 800
 
   scene         = new Scene(pin,SCENE_WH.x,SCENE_WH.y,new ImagePattern(new Image("/untangle/background.png")))
   lazy val pin  = new Group()
@@ -31,7 +33,9 @@ object Untangle extends App
     stroke        = Color.BLACK
     fill        <-- (if (hasCollision) new ImagePattern(Image.cached("/untangle/red_button.png"  ))
                                   else new ImagePattern(Image.cached("/untangle/green_button.png")) )
-    Δ(center)   <-- Δ(dragDistance)
+    //Δ(center)   <-- Δ(dragDistance)
+    def newPos = prev(center) + Δ(dragDistance)
+    center      <-- minmax(RADIUS.to2D, newPos, BACKGROUND - RADIUS.to2D)
     corners     ::= this
   }
 
@@ -68,11 +72,12 @@ object Untangle extends App
   levelOneXpositions.foreach ( xPos => { starIndex += 1; pin <++ new Star ( (xPos, 0.8875), starIndex ) } )
   levelOneXpositions.foreach ( xPos => { starIndex += 1; pin <++ new Star ( (xPos, 0.936 ), starIndex ) } )
 
-  pin <++ new Label { layoutXY <-- scene.wh * (0.3,0.896); font = new Font(48); text <-- level.toString}
+  pin <++ new Label { layoutXY <-- scene.wh * (0.3,0.896); font = new Font(48); text <-- level.toString; transform <-- Scale(SCALEY.to2D)}
 
   pin <++ new Group { children <-- edges  }
   pin <++ new Group { children <-- corners}
   pin <++ new Label {
+    transform      <-- Scale(SCALEY.to2D)
     translateXY    <-- scene.wh * (0.49,0.883)
     font             = new Font(65)
     text           <-- (if(time < nextLevelIn && finished) "" + ((nextLevelIn - time) / second).toInt else "")
