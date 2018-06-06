@@ -134,15 +134,17 @@ object Untangle extends App
     true
   }
 
-  createLevel(level)
-  when(finished) ==> {
-    nextLevelIn = time + (5 s)
-    in(5 s) --> {
-      if(finished) {
-        level += 1
-        createLevel(level)
+  nextFrame --> {
+    createLevel(level)
+    when(finished) ==> {
+      nextLevelIn = time + (5 s)
+      in(5 s) --> {
+        if(finished) {
+          level += 1
+          createLevel(level)
+        }
       }
     }
+    when(!finished) ==> { nextLevelIn = time }
   }
-  when(!finished) ==> { nextLevelIn = time }
 }
