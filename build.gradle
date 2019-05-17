@@ -1,5 +1,5 @@
 group 'SANDEC'
-version '0.7'
+version '0.8'
 
 
 
@@ -14,7 +14,7 @@ buildscript {
         classpath "com.sandec.jpro:jpro-plugin-gradle:$JPRO_PLUGIN_VERSION"
         classpath "SANDEC:simplefx-plugin-gradle:$SIMPLEFX_VERSION"
 
-        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.7.3'
+        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.4'
     }
 }
 
