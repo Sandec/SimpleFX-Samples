@@ -1,5 +1,5 @@
 group 'SANDEC'
-version '0.8'
+version '0.8.1'
 
 
 
@@ -58,6 +58,16 @@ publishing {
             artifactId project.name
             version project.version
 
+        }
+    }
+    repositories {
+        maven {
+            name = "artifactory"
+            url = "https://sandec.jfrog.io/artifactory/repo"
+            credentials {
+                username System.getenv("SANDEC_ARTIFACTORY_USERNAME")
+                password System.getenv("SANDEC_ARTIFACTORY_PASSWORD")
+            }
         }
     }
 }
