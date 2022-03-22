@@ -7,6 +7,10 @@ import simplefx.all.BlendMode._
 import simplefx.experimental._
 
 /* === ColorfulCircles ========================== START ============================================================= */
+object ColorfulCirclesStarter extends App {
+  ColorfulCircles.main(null)
+}
+
 object ColorfulCircles extends App
 @SimpleFXApp class ColorfulCircles { title = "SimpleFX Sample - ColorfulCircles"
 

@@ -4,7 +4,11 @@ import simplefx.all._
 import simplefx.core._
 import simplefx.experimental._
 
-object Untangle extends App
+object UntangleStarter extends App {
+  Untangle.main(null)
+}
+
+object Untangle extends App {}
 @SimpleFXApp class Untangle {
   val _font = new Font(48)
 

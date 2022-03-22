@@ -8,6 +8,10 @@ import simplefx.all._
 import simplefx.experimental._
 
 /* === PlanetSimulator ========================== START ===================================== */
+object PlanetSimulator2DStarter extends App {
+  PlanetSimulator2D.main(null)
+}
+
 object PlanetSimulator2D extends App
 @SimpleFXApp class PlanetSimulator2D {
 

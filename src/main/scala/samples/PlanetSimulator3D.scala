@@ -10,6 +10,10 @@ import simplefx.experimental._
 import simplefx.util.Predef._
 
 /* === PlanetSimulator ========================== START ============================================================= */
+object PlanetSimulator3DStarter extends App {
+  PlanetSimulator3D.main(null)
+}
+
 object PlanetSimulator3D extends App
 @SimpleFXApp class PlanetSimulator3D {
 
